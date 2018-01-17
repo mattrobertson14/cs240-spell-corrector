@@ -29,9 +29,9 @@ public class Main {
 		//}
 
 		//System.out.println("Suggestion is: " + suggestion);
-		System.out.println(args[1]);
 		Trie t = new Trie();
 		t.add(args[1]);
+		System.out.println(String.format("Word Count: %d, Node Count: %d", t.getWordCount(), t.getNodeCount()));
 	}
 
 }

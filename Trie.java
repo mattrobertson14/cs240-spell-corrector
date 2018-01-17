@@ -3,13 +3,17 @@ package spell;
 public class Trie implements ITrie {
 
   private Node[] nodes = new Node[26];
+  public static int nodeCount = 0;
+  public static int wordCount = 0;
 
   public void add(String word)  {
+    Trie.wordCount++;
     word.toLowerCase();
     char[] ch = word.toCharArray();
     int x = (int)ch[0]-96;
     if (nodes[x] == null){
       Node n = new Node();
+      Trie.nodeCount++;
       nodes[x] = n;
     }
     if (ch.length > 1){
@@ -17,7 +21,6 @@ public class Trie implements ITrie {
     } else {
       nodes[x].increment();
     }
-    System.out.println(nodes[x].getValue());
   }
 
   public ITrie.INode find(String word){
@@ -27,11 +30,11 @@ public class Trie implements ITrie {
   }
 
   public int getWordCount() {
-    return -1;
+    return Trie.wordCount;
   }
 
   public int getNodeCount() {
-    return -1;
+    return Trie.nodeCount;
   }
 
   @Override

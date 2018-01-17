@@ -9,6 +9,7 @@ public class Node implements ITrie.INode {
     int x = (int)ch[level]-96;
     if (children[x] == null){
       Node n = new Node();
+      Trie.nodeCount++;
       children[x] = n;
     }
     if (level != ch.length-1){
@@ -16,6 +17,17 @@ public class Node implements ITrie.INode {
     } else {
       children[x].increment();
     }
+  }
+
+  public int count() {
+    int result = 0;
+    for (int i = 0; i < children.length; i++){
+      if (children[i] != null){
+        result++;
+        result += children[i].count();
+      }
+    }
+    return result;
   }
 
   public void increment() {
