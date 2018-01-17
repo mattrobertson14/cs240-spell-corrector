@@ -29,9 +29,11 @@ public class Main {
 		//}
 
 		//System.out.println("Suggestion is: " + suggestion);
-		Trie t = new Trie();
-		t.add(args[1]);
-		System.out.println(String.format("Word Count: %d, Node Count: %d", t.getWordCount(), t.getNodeCount()));
+		SpellCorrector sc = new SpellCorrector();
+		sc.useDictionary(args[0]);
+
+		Trie t = sc.getTrie();
+		System.out.println(String.format("Word Count: %d, Node Count: %d\nInput Word: %s", t.getWordCount(), t.getNodeCount(), inputWord));
 	}
 
 }

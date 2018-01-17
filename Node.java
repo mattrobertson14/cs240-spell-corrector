@@ -6,7 +6,7 @@ public class Node implements ITrie.INode {
   private int value = 0;
 
   public void add(char[] ch, int level){
-    int x = (int)ch[level]-96;
+    int x = (int)ch[level]-97;
     if (children[x] == null){
       Node n = new Node();
       Trie.nodeCount++;

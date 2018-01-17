@@ -10,7 +10,7 @@ public class Trie implements ITrie {
     Trie.wordCount++;
     word.toLowerCase();
     char[] ch = word.toCharArray();
-    int x = (int)ch[0]-96;
+    int x = (int)ch[0]-97;
     if (nodes[x] == null){
       Node n = new Node();
       Trie.nodeCount++;
