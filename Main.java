@@ -33,7 +33,8 @@ public class Main {
 		sc.useDictionary(args[0]);
 
 		Trie t = sc.getTrie();
-		System.out.println(String.format("Word Count: %d, Node Count: %d\nInput Word: %s", t.getWordCount(), t.getNodeCount(), inputWord));
+		//System.out.println(t.toString());
+		System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s", t.getWordCount(), t.getNodeCount(), inputWord));
 	}
 
 }

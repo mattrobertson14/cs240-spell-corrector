@@ -3,17 +3,15 @@ package spell;
 public class Trie implements ITrie {
 
   private Node[] nodes = new Node[26];
-  public static int nodeCount = 0;
-  public static int wordCount = 0;
+  public static StringBuilder strB = new StringBuilder();
 
   public void add(String word)  {
-    Trie.wordCount++;
     word.toLowerCase();
     char[] ch = word.toCharArray();
     int x = (int)ch[0]-97;
     if (nodes[x] == null){
-      Node n = new Node();
-      Trie.nodeCount++;
+      String str = "" + ch[0];
+      Node n = new Node(str);
       nodes[x] = n;
     }
     if (ch.length > 1){
@@ -24,22 +22,54 @@ public class Trie implements ITrie {
   }
 
   public ITrie.INode find(String word){
-    Node n = new Node();
 
-    return n;
+    return null;
   }
 
   public int getWordCount() {
-    return Trie.wordCount;
+    int wordCount = 0;
+
+    for (int i = 0; i < nodes.length; i++){
+      if (nodes[i] != null){
+        if (nodes[i].getValue() > 0){
+          wordCount++;
+        }
+
+        wordCount = nodes[i].getWordCount(wordCount);
+      }
+    }
+
+    return wordCount;
   }
 
   public int getNodeCount() {
-    return Trie.nodeCount;
+    int nodeCount = 0;
+
+    for (int i = 0; i < nodes.length; i++){
+      if (nodes[i] != null){
+        nodeCount++;
+        nodeCount = nodes[i].getNodeCount(nodeCount);
+      }
+    }
+
+    return nodeCount;
   }
 
   @Override
   public String toString() {
-    return "";
+
+    for (int i = 0; i < nodes.length; i++){
+      if (nodes[i] != null){
+        if(nodes[i].getValue() > 0){
+          Trie.strB.append(nodes[i].getWord() + "\n");
+        }
+
+        nodes[i].toString();
+
+      }
+    }
+
+    return strB.toString();
   }
 
   @Override
