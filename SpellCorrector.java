@@ -26,6 +26,14 @@ public class SpellCorrector implements ISpellCorrector {
   }
 
 	public String suggestSimilarWord(String inputWord){
+    String word = inputWord.toLowerCase();
+
+    if (trie.find(word) != null){
+      return word;
+    }
+
+    
+
     return "";
   }
 

@@ -70,6 +70,25 @@ public class Node implements ITrie.INode {
     return "";
   }
 
+  public Node find(String word){
+    String s;
+    for (int i = 0; i < children.length; i++){
+      if (word.equals("")){
+        return null;
+      }
+      if (children[i] != null){
+        s = children[i].getWord();
+        if ( word.substring(0,1).equals(s.substring(s.length()-1,s.length())) ) {
+          if (children[i].getValue() > 0 && word.length() == 1){
+            return children[i];
+          }
+          return children[i].find(word.substring(1,word.length()));
+        }
+      }
+    }
+    return null;
+  }
+
   // Returns the frequency count
   public int getValue() {
     return value;

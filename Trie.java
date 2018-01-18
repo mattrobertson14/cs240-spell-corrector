@@ -22,6 +22,16 @@ public class Trie implements ITrie {
   }
 
   public ITrie.INode find(String word){
+    for (int i = 0; i < nodes.length; i ++){
+      if (nodes[i] != null){
+        if ( word.substring(0,1).equals(nodes[i].getWord()) ){
+          if (nodes[i].getValue() > 0 && word.length() == 1){
+            return nodes[i];
+          }
+          return nodes[i].find(word.substring(1,word.length()));
+        }
+      }
+    }
 
     return null;
   }
@@ -74,7 +84,9 @@ public class Trie implements ITrie {
 
   @Override
   public int hashCode() {
-    return -1;
+    int node = getNodeCount();
+    int word = getWordCount();
+    return (node%1234)*(word%4321)*(node/word);
   }
 
   @Override

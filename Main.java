@@ -34,7 +34,7 @@ public class Main {
 
 		Trie t = sc.getTrie();
 		//System.out.println(t.toString());
-		System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s", t.getWordCount(), t.getNodeCount(), inputWord));
+		System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s\nHash Code: %d\nSuggested Word: %s", t.getWordCount(), t.getNodeCount(), inputWord, t.hashCode(), sc.suggestSimilarWord(args[1])));
 	}
 
 }
