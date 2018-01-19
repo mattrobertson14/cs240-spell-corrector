@@ -6,14 +6,26 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 
+		if (args.length < 2){
+			System.out.println("\n\tERROR: Please include a .txt file AND a suggested word\n");
+			System.exit(0);
+		}
 		String dictionaryFileName = args[0];
 		String inputWord = args[1];
 
-		SpellCorrector sc = new SpellCorrector();
+		try{
 
-		sc.useDictionary(dictionaryFileName);
+			SpellCorrector sc = new SpellCorrector();
 
-		System.out.println(sc.suggestSimilarWord(inputWord));
+			sc.useDictionary(dictionaryFileName);
+
+			System.out.println(sc.suggestSimilarWord(inputWord));
+
+		} catch (IOException ex){
+			System.out.println(String.format("\n\tERROR: %s was either not found or invalid, please enter a different file\n", dictionaryFileName));
+			System.exit(0);
+		}
+
 
 		/*** Test for Trie.toString
 			Trie tr = sc.getTrie();
