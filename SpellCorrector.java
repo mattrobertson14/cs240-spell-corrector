@@ -32,9 +32,15 @@ public class SpellCorrector implements ISpellCorrector {
       return word;
     }
 
-    
+    Set<Node> list = new HashSet<Node>();
+    trie.deletion(word, list);
+    System.out.println(list.size());
 
-    return "";
+    for (Node n : list){
+      System.out.println(n.getWord());
+    }
+
+    return null;
   }
 
 }

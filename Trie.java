@@ -1,4 +1,5 @@
 package spell;
+import java.util.*;
 
 public class Trie implements ITrie {
 
@@ -92,5 +93,26 @@ public class Trie implements ITrie {
   @Override
   public boolean equals(Object o) {
     return false;
+  }
+
+
+  // Edit Distance Calculations
+  public Set<Node> deletion(String word, Set<Node> list){
+    int count = 0;
+    while (count <= word.length()){
+      for (int i = 0; i < nodes.length; i++){
+        if (nodes[i] != null){
+          if (count == 0){
+            nodes[i].deletion(word,count,1,list,word.length());
+          } else if (nodes[i].getWord().equals(word.substring(0,1))) {
+              nodes[i].deletion(word.substring(1,word.length()),count,1,list,word.length());
+            }
+        }
+      }
+
+      count++;
+    }
+
+    return list;
   }
 }

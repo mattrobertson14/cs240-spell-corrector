@@ -1,4 +1,5 @@
 package spell;
+import java.util.*;
 
 public class Node implements ITrie.INode {
 
@@ -92,6 +93,40 @@ public class Node implements ITrie.INode {
   // Returns the frequency count
   public int getValue() {
     return value;
+  }
+
+
+
+  // Edit Distance Calculations
+  public Set<Node> deletion(String word, int index, int level, Set<Node> list, int max){
+    String s;
+    int lvl;
+    for (int i = 0; i < children.length; i++){
+      if (word.equals("") && index != max){
+        return list;
+      }
+      if (children[i] != null){
+        s = children[i].getWord();
+        if (index == max && level == max){
+          if (children[i].getValue() > 0){
+            list.add(children[i]);
+          }
+          continue;
+        } else if (level == index){
+          String str = new String(word);
+          lvl = level +1;
+          children[i].deletion(str, index, lvl, list, max);
+        } else if (s.substring(s.length()-1, s.length()).equals(word.substring(0,1))){
+          if (children[i].getValue() > 0 && word.length() == 1){
+            list.add(children[i]);
+          }
+          lvl = level +1;
+          children[i].deletion(word.substring(1,word.length()), index, lvl, list, max);
+        }
+      }
+    }
+
+    return list;
   }
 
 }

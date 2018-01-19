@@ -30,11 +30,12 @@ public class Main {
 
 		//System.out.println("Suggestion is: " + suggestion);
 		SpellCorrector sc = new SpellCorrector();
-		sc.useDictionary(args[0]);
+		sc.useDictionary(dictionaryFileName);
+		sc.suggestSimilarWord(inputWord);
 
 		Trie t = sc.getTrie();
 		//System.out.println(t.toString());
-		System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s\nHash Code: %d\nSuggested Word: %s", t.getWordCount(), t.getNodeCount(), inputWord, t.hashCode(), sc.suggestSimilarWord(args[1])));
+		//System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s\nHash Code: %d\nSuggested Word: %s", t.getWordCount(), t.getNodeCount(), inputWord, t.hashCode(), sc.suggestSimilarWord(args[1])));
 	}
 
 }
