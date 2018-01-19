@@ -24,6 +24,8 @@ public class SpellCorrector implements ISpellCorrector {
         scanner.next();
       }
     }
+
+    scanner.close();
   }
 
   public Trie getTrie(){

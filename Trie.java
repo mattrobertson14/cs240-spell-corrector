@@ -5,7 +5,7 @@ public class Trie implements ITrie {
 
   private int nodeCount = 0;
   private int wordCount = 0;
-  private Node root = new Node();
+  public Node root = new Node();
 
 	public void add(String word) {
     root.addWord(word);
@@ -72,12 +72,30 @@ public class Trie implements ITrie {
 	public int hashCode() {
     int node = nodeCount;
     int word = wordCount;
-    return (node%1234)*(word%4321);
+    return (node%1234)*(word%4321)+(root.hashCode()%1234567);
   }
 
 	@Override
 	public boolean equals(Object o) {
-    return false;
+    if (o == null){ return false; }
+    if (o == this){ return true; }
+    if (this.getClass() != o.getClass()){ return false; }
+    Trie trie = (Trie)o;
+    if (wordCount != trie.getWordCount()){ return false; }
+    if (nodeCount != trie.getNodeCount()){ return false; }
+    return equalsHelper(this.root, trie.root);
+  }
+
+  public boolean equalsHelper(Node n1, Node n2){
+    for (int i = 0; i < 26; i++){
+      if (n1.children[i] != null && n2.children[i] == null){ return false; }
+      if (n2.children[i] != null && n1.children[i] == null){ return false; }
+      if (n1.children[i] != null && n2.children[i] != null){
+        if (n1.children[i].getValue() != n2.children[i].getValue()){ return false; }
+        return equalsHelper(n1.children[i], n2.children[i]);
+      }
+    }
+    return true;
   }
 
 

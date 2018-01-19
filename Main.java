@@ -2,42 +2,46 @@ package spell;
 
 import java.io.IOException;
 
-/**
- * A simple main class for running the spelling corrector. This class is not
- * used by the passoff program.
- */
 public class Main {
 
-	/**
-	 * Give the dictionary file name as the first argument and the word to correct
-	 * as the second argument.
-	 */
 	public static void main(String[] args) throws IOException {
 
 		String dictionaryFileName = args[0];
 		String inputWord = args[1];
 
-		/**
-		 * Create an instance of your corrector here
-		 */
-		//ISpellCorrector corrector = null;
-
-		//corrector.useDictionary(dictionaryFileName);
-		//String suggestion = corrector.suggestSimilarWord(inputWord);
-		//if (suggestion == null) {
-		//    suggestion = "No similar word found";
-		//}
-
-		//System.out.println("Suggestion is: " + suggestion);
 		SpellCorrector sc = new SpellCorrector();
-		sc.useDictionary(dictionaryFileName);
-		//sc.suggestSimilarWord(inputWord);
 
-		Trie t = sc.getTrie();
-		//System.out.println(t.toString());
+		sc.useDictionary(dictionaryFileName);
+
 		System.out.println(sc.suggestSimilarWord(inputWord));
-		//System.out.println(String.format("Words: %d\nNodes: %d",t.getWordCount(), t.getNodeCount()));
-		//System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s\nHash Code: %d\nSuggested Word: %s", t.getWordCount(), t.getNodeCount(), inputWord, t.hashCode(), sc.suggestSimilarWord(args[1])));
+
+		/*** Test for Trie.toString
+			Trie tr = sc.getTrie();
+			System.out.println(tr.toString());
+		*/
+
+		/*** Test for Trie.hashCode (and whether or not nodeCount and wordCount work)
+			Trie tr = sc.getTrie();
+			System.out.println(String.format("Hash Code: %d\nWord Count: %d\nNode Count: %d",tr.hashCode(),tr.getWordCount(),tr.getNodeCount()));
+		*/
+
+		/*** Test for Trie.equals
+		SpellCorrector sc2 = new SpellCorrector();
+		SpellCorrector sc3 = new SpellCorrector();
+
+		sc.useDictionary(dictionaryFileName);
+		sc2.useDictionary("test.txt");
+		sc3.useDictionary(dictionaryFileName);
+
+		Trie tr = sc.getTrie();
+		Trie tr2 = sc2.getTrie();
+		Trie tr3 = sc3.getTrie();
+
+		System.out.println(tr.equals(tr2)); // FALSE
+		System.out.println(tr2.equals(tr)); // FALSE
+		System.out.println(tr.equals(tr3)); // TRUE
+		System.out.println(tr3.equals(tr)); // TRUE
+		*/
 	}
 
 }
