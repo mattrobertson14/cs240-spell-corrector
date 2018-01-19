@@ -31,10 +31,12 @@ public class Main {
 		//System.out.println("Suggestion is: " + suggestion);
 		SpellCorrector sc = new SpellCorrector();
 		sc.useDictionary(dictionaryFileName);
-		sc.suggestSimilarWord(inputWord);
+		//sc.suggestSimilarWord(inputWord);
 
 		Trie t = sc.getTrie();
 		//System.out.println(t.toString());
+		System.out.println(sc.suggestSimilarWord(inputWord));
+		//System.out.println(String.format("Words: %d\nNodes: %d",t.getWordCount(), t.getNodeCount()));
 		//System.out.println(String.format("Word Count: %d\nNode Count: %d\nInput Word: %s\nHash Code: %d\nSuggested Word: %s", t.getWordCount(), t.getNodeCount(), inputWord, t.hashCode(), sc.suggestSimilarWord(args[1])));
 	}
 

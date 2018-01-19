@@ -3,33 +3,33 @@ import java.util.*;
 
 public class Trie implements ITrie {
 
-  private Node[] nodes = new Node[26];
-  public static StringBuilder strB = new StringBuilder();
+  private int nodeCount = 0;
+  private int wordCount = 0;
+  private Node root = new Node();
 
-  public void add(String word)  {
-    word.toLowerCase();
-    char[] ch = word.toCharArray();
-    int x = (int)ch[0]-97;
-    if (nodes[x] == null){
-      String str = "" + ch[0];
-      Node n = new Node(str);
-      nodes[x] = n;
-    }
-    if (ch.length > 1){
-      nodes[x].add(ch, 1);
-    } else {
-      nodes[x].increment();
-    }
+	public void add(String word) {
+    root.addWord(word);
   }
 
-  public ITrie.INode find(String word){
-    for (int i = 0; i < nodes.length; i ++){
-      if (nodes[i] != null){
-        if ( word.substring(0,1).equals(nodes[i].getWord()) ){
-          if (nodes[i].getValue() > 0 && word.length() == 1){
-            return nodes[i];
+	public ITrie.INode find(String word) {
+    return findHelper(root, word);
+  }
+
+  private Node findHelper(Node n, String word){
+    if (word.length() == 0){
+      return null;
+    }
+
+    char c = word.charAt(0);
+    int index = c - 'a';
+
+    for (int i = 0; i < 26; i++){
+      if (n.children[i] != null){
+        if (index == i){
+          if (word.length() == 1 && n.children[i].getValue() > 0){
+            return n.children[i];
           }
-          return nodes[i].find(word.substring(1,word.length()));
+          return findHelper(n.children[i], word.substring(1,word.length()));
         }
       }
     }
@@ -37,82 +37,84 @@ public class Trie implements ITrie {
     return null;
   }
 
-  public int getWordCount() {
-    int wordCount = 0;
-
-    for (int i = 0; i < nodes.length; i++){
-      if (nodes[i] != null){
-        if (nodes[i].getValue() > 0){
-          wordCount++;
-        }
-
-        wordCount = nodes[i].getWordCount(wordCount);
-      }
-    }
-
+	public int getWordCount() {
     return wordCount;
   }
 
-  public int getNodeCount() {
-    int nodeCount = 0;
-
-    for (int i = 0; i < nodes.length; i++){
-      if (nodes[i] != null){
-        nodeCount++;
-        nodeCount = nodes[i].getNodeCount(nodeCount);
-      }
-    }
-
+	public int getNodeCount() {
     return nodeCount;
   }
 
-  @Override
-  public String toString() {
+	@Override
+	public String toString() {
+    StringBuilder output = new StringBuilder();
+    StringBuilder word = new StringBuilder();
+    toStringHelper(root, word, output);
+    return output.toString();
+  }
 
-    for (int i = 0; i < nodes.length; i++){
-      if (nodes[i] != null){
-        if(nodes[i].getValue() > 0){
-          Trie.strB.append(nodes[i].getWord() + "\n");
-        }
-
-        nodes[i].toString();
-
-      }
+  private void toStringHelper(Node n, StringBuilder word, StringBuilder output){
+    if (n.getValue() > 0){
+      output.append(word.toString() + "\n");
     }
 
-    return strB.toString();
+    for (int i = 0; i < 26; i++){
+      char c = (char)(i + 'a');
+      if (n.children[i] != null){
+        word.append(c);
+        toStringHelper(n.children[i], word, output);
+        word.deleteCharAt(word.length()-1);
+      }
+    }
   }
 
-  @Override
-  public int hashCode() {
-    int node = getNodeCount();
-    int word = getWordCount();
-    return (node%1234)*(word%4321)*(node/word);
+	@Override
+	public int hashCode() {
+    int node = nodeCount;
+    int word = wordCount;
+    return (node%1234)*(word%4321);
   }
 
-  @Override
-  public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
     return false;
   }
 
 
-  // Edit Distance Calculations
-  public Set<Node> deletion(String word, Set<Node> list){
-    int count = 0;
-    while (count <= word.length()){
-      for (int i = 0; i < nodes.length; i++){
-        if (nodes[i] != null){
-          if (count == 0){
-            nodes[i].deletion(word,count,1,list,word.length());
-          } else if (nodes[i].getWord().equals(word.substring(0,1))) {
-              nodes[i].deletion(word.substring(1,word.length()),count,1,list,word.length());
-            }
-        }
-      }
 
-      count++;
+  public class Node implements INode {
+
+    private int value = 0;
+    private Node[] children = new Node[26];
+
+    Node() {
+      nodeCount++;
     }
 
-    return list;
+    public void increment() {
+      value++;
+    }
+
+    public void addWord(String word){
+      char c = word.charAt(0);
+      int index = c - 'a';
+
+      if (children[index] == null){
+        Node n = new Node();
+        //nodeCount++;
+        children[index] = n;
+      }
+
+      if (word.length() == 1){
+        children[index].increment();
+        if (children[index].getValue() == 1){ wordCount++; }
+      } else {
+        children[index].addWord(word.substring(1,word.length()));
+      }
+    }
+
+ 		public int getValue() {
+      return value;
+    }
   }
 }
