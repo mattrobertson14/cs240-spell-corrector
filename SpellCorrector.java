@@ -4,7 +4,7 @@ import java.io.*;
 
 public class SpellCorrector implements ISpellCorrector {
 
-  private Trie trie = new Trie();
+  private Trie trie;
   private HashSet<String> deletionSet = new HashSet<String>();
   private HashSet<String> transposeSet = new HashSet<String>();
   private HashSet<String> alterationSet = new HashSet<String>();
@@ -15,7 +15,7 @@ public class SpellCorrector implements ISpellCorrector {
     File file = new File(dictionaryFileName);
 
     Scanner scanner = new Scanner(file);
-
+    trie = new Trie();
     while (scanner.hasNext()){
       if (scanner.hasNext("[a-zA-Z ]+")){
         String word = scanner.next();
@@ -28,9 +28,9 @@ public class SpellCorrector implements ISpellCorrector {
     scanner.close();
   }
 
-  public Trie getTrie(){
-    return trie;
-  }
+  //public Trie getTrie(){
+  //  return trie;
+  //}
 
 	public String suggestSimilarWord(String inputWord){
     String word = inputWord.toLowerCase();
@@ -38,6 +38,11 @@ public class SpellCorrector implements ISpellCorrector {
     if (trie.find(word) != null){
       return word;
     }
+
+    deletionSet.clear();
+    transposeSet.clear();
+    alterationSet.clear();
+    insertionSet.clear();
 
     RunningResult result = new RunningResult();
 
@@ -52,27 +57,27 @@ public class SpellCorrector implements ISpellCorrector {
     findResult(insertionSet, result);
 
     if (result.str == null){
-      HashSet<String> deletionSetCopy = new HashSet<String>(deletionSet);
-      HashSet<String> transposeSetCopy = new HashSet<String>(transposeSet);
-      HashSet<String> alterationSetCopy = new HashSet<String>(alterationSet);
-      HashSet<String> insertionSetCopy = new HashSet<String>(insertionSet);
+      HashSet<String> editDistanceTwo = new HashSet<String>(deletionSet);
+      editDistanceTwo.addAll(transposeSet);
+      editDistanceTwo.addAll(alterationSet);
+      editDistanceTwo.addAll(insertionSet);
       deletionSet.clear();
       transposeSet.clear();
       alterationSet.clear();
       insertionSet.clear();
-      for (String s : deletionSetCopy){
+      for (String s : editDistanceTwo){
         deletion(s);
       }
 
-      for (String s : transposeSetCopy){
+      for (String s : editDistanceTwo){
         transpose(s);
       }
 
-      for (String s : alterationSetCopy){
+      for (String s : editDistanceTwo){
         alteration(s);
       }
 
-      for (String s : insertionSetCopy){
+      for (String s : editDistanceTwo){
         insertion(s);
       }
 

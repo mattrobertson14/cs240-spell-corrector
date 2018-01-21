@@ -1,6 +1,7 @@
 package spell;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -17,7 +18,9 @@ public class Main {
 
 			SpellCorrector sc = new SpellCorrector();
 
+			System.out.print("Reading Dictionary File Into Trie...");
 			sc.useDictionary(dictionaryFileName);
+			System.out.println(" Done.");
 
 			System.out.println(sc.suggestSimilarWord(inputWord));
 

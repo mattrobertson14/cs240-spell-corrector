@@ -72,7 +72,7 @@ public class Trie implements ITrie {
 	public int hashCode() {
     int node = nodeCount;
     int word = wordCount;
-    return (node%1234)*(word%4321)+(root.hashCode()%1234567);
+    return (node%1234)*(word%4321);
   }
 
 	@Override
@@ -92,7 +92,7 @@ public class Trie implements ITrie {
       if (n2.children[i] != null && n1.children[i] == null){ return false; }
       if (n1.children[i] != null && n2.children[i] != null){
         if (n1.children[i].getValue() != n2.children[i].getValue()){ return false; }
-        return equalsHelper(n1.children[i], n2.children[i]);
+        if (equalsHelper(n1.children[i], n2.children[i]) == false){ return false; }
       }
     }
     return true;
